@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
     initializeEventListeners();
     initializeAnimations();
+    initializeAPIData(); // Cargar datos reales
     simulateLiveData();
 });
 
@@ -439,85 +440,155 @@ function getTopSellingProducts() {
     ];
 }
 
-// ============ INTEGRACIONES API MOCK ============
-class MockAPIClient {
-    async fetchSales() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    status: 'success',
-                    data: {
-                        total: 45230.50,
-                        transactions: 28,
-                        average: 1616.09
-                    }
-                });
-            }, 500);
+// ============ API CLIENT REAL ============
+class APIClient {
+    constructor(baseURL = '/api') {
+        this.baseURL = baseURL;
+    }
+
+    async request(endpoint, options = {}) {
+        const url = `${this.baseURL}${endpoint}`;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            },
+            ...options
+        };
+
+        try {
+            const response = await fetch(url, config);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Error en la solicitud');
+            }
+            
+            return data;
+        } catch (error) {
+            console.error(`Error en ${endpoint}:`, error);
+            throw error;
+        }
+    }
+
+    // Dashboard
+    async getDashboardMetrics() {
+        return this.request('/dashboard/metrics');
+    }
+
+    async getSystemStatus() {
+        return this.request('/status');
+    }
+
+    // Inventory
+    async getProducts(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/inventory/products${query ? '?' + query : ''}`);
+    }
+
+    async createProduct(product) {
+        return this.request('/inventory/products', {
+            method: 'POST',
+            body: JSON.stringify(product)
         });
     }
 
-    async fetchInventory() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    status: 'success',
-                    data: {
-                        totalSkus: 892,
-                        totalValue: 485320,
-                        lowStock: 12
-                    }
-                });
-            }, 500);
+    async updateProduct(id, product) {
+        return this.request(`/inventory/products/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(product)
         });
     }
 
-    async fetchEmployees() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    status: 'success',
-                    data: {
-                        total: 12,
-                        active: 8,
-                        roles: ['Administrador', 'Vendedor', 'Bodeguero']
-                    }
-                });
-            }, 500);
+    async deleteProduct(id) {
+        return this.request(`/inventory/products/${id}`, {
+            method: 'DELETE'
         });
     }
 
-    async fetchReports(type) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    status: 'success',
-                    type: type,
-                    data: {
-                        period: 'Últimos 7 días',
-                        total: 318250
-                    }
-                });
-            }, 500);
+    // Sales
+    async getSales(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/sales${query ? '?' + query : ''}`);
+    }
+
+    async createSale(sale) {
+        return this.request('/sales', {
+            method: 'POST',
+            body: JSON.stringify(sale)
         });
+    }
+
+    // Warehouse
+    async getMovements(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/warehouse/movements/list${query ? '?' + query : ''}`);
+    }
+
+    async createMovement(movement) {
+        return this.request('/warehouse/movements', {
+            method: 'POST',
+            body: JSON.stringify(movement)
+        });
+    }
+
+    // Reports
+    async getReports(type) {
+        return this.request(`/reports/${type}`);
+    }
+
+    async exportReport(type, format) {
+        return this.request(`/reports/export?type=${type}&format=${format}`);
+    }
+
+    // Health
+    async getHealth() {
+        return this.request('/health');
     }
 }
 
-// Instancia del cliente API mock
-const apiClient = new MockAPIClient();
+// Instancia del cliente API
+const apiClient = new APIClient();
 
 // ============ INICIALIZACIÓN DE API ============
 async function initializeAPIData() {
     try {
-        const [sales, inventory, employees] = await Promise.all([
-            apiClient.fetchSales(),
-            apiClient.fetchInventory(),
-            apiClient.fetchEmployees()
+        // Cargar datos reales del dashboard
+        const [metrics, health] = await Promise.all([
+            apiClient.getDashboardMetrics(),
+            apiClient.getHealth()
         ]);
 
-        console.log('Datos cargados:', { sales, inventory, employees });
+        console.log('Datos cargados:', { metrics, health });
+        
+        // Actualizar UI con datos reales
+        updateDashboardWithRealData(metrics);
     } catch (error) {
         console.error('Error al cargar datos:', error);
-        showNotification('Error al cargar datos', 'error');
+        showNotification('Error al cargar datos - usando datos offline', 'warning');
+    }
+}
+
+// Actualizar dashboard con datos reales
+function updateDashboardWithRealData(metrics) {
+    if (!metrics || !metrics.data) return;
+    
+    const data = metrics.data;
+    
+    // Actualizar KPIs
+    const salesElement = document.querySelector('.kpi-card.sales .kpi-value');
+    if (salesElement && data.totalSales !== undefined) {
+        salesElement.textContent = formatCurrency(data.totalSales);
+    }
+    
+    const transactionsElement = document.querySelector('.kpi-card.transactions .kpi-value');
+    if (transactionsElement && data.totalTransactions !== undefined) {
+        transactionsElement.textContent = formatNumber(data.totalTransactions);
+    }
+    
+    const productsElement = document.querySelector('.kpi-card.products .kpi-value');
+    if (productsElement && data.totalProducts !== undefined) {
+        productsElement.textContent = formatNumber(data.totalProducts);
     }
 }
 

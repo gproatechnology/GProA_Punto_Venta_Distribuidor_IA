@@ -1,189 +1,171 @@
-const express = require('express');
-const router = express.Router();
-
 /**
- * Rutas de Bodega
+ * GProA - Rutas de Bodega
+ * backend/routes/warehouseRoutes.js
+ * 
+ * Rutas delgadas - toda lógica en services/
  */
 
+const express = require('express');
+const router = express.Router();
+const warehouseService = require('../services/warehouseService');
+const { asyncHandler } = require('../utils/errors');
+
 // GET - Obtener todas las bodegas
-router.get('/', (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const warehouses = await warehouseService.getWarehouses(tenantId);
+    
     res.json({
         status: 'success',
         message: 'Bodegas obtenidas',
-        data: [
-            {
-                id: 1,
-                name: 'Bodega Central',
-                capacity: 2500,
-                used: 1800,
-                utilization: 72,
-                status: 'Operativo'
-            },
-            {
-                id: 2,
-                name: 'Bodega Sucursal Norte',
-                capacity: 1200,
-                used: 540,
-                utilization: 45,
-                status: 'Operativo'
-            },
-            {
-                id: 3,
-                name: 'Bodega Sucursal Sur',
-                capacity: 1200,
-                used: 1056,
-                utilization: 88,
-                status: 'Crítico'
-            }
-        ]
+        count: warehouses.length,
+        data: warehouses
     });
-});
+}));
 
 // GET - Obtener bodega por ID
-router.get('/:id', (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const warehouse = await warehouseService.getWarehouseById(tenantId, req.params.id);
+    
     res.json({
         status: 'success',
         message: `Bodega ${req.params.id} obtenida`,
-        data: {
-            id: req.params.id,
-            name: 'Bodega ejemplo',
-            capacity: 2000,
-            used: 1500,
-            utilization: 75
-        }
+        data: warehouse
     });
-});
+}));
 
-// GET - Obtener movimientos de bodega
-router.get('/movements/list', (req, res) => {
+// POST - Crear bodega
+router.post('/', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const warehouse = await warehouseService.createWarehouse(tenantId, req.body, userId);
+    
+    res.status(201).json({
+        status: 'success',
+        message: 'Bodega creada exitosamente',
+        data: warehouse
+    });
+}));
+
+// PUT - Actualizar bodega
+router.put('/:id', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const warehouse = await warehouseService.updateWarehouse(tenantId, req.params.id, req.body, userId);
+    
+    res.json({
+        status: 'success',
+        message: `Bodega ${req.params.id} actualizada`,
+        data: warehouse
+    });
+}));
+
+// GET - Obtener movimientos de inventario
+router.get('/movements/list', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const { type, product, startDate, endDate, limit } = req.query;
+    
+    const filters = {};
+    if (type) filters.type = type;
+    if (product) filters.product = product;
+    if (startDate || endDate) {
+        filters.createdAt = {};
+        if (startDate) filters.createdAt.$gte = new Date(startDate);
+        if (endDate) filters.createdAt.$lte = new Date(endDate);
+    }
+    
+    const movements = await warehouseService.getMovements(tenantId, filters);
+    
     res.json({
         status: 'success',
         message: 'Movimientos obtenidos',
-        data: [
-            {
-                id: 'REF-2847',
-                type: 'Entrada',
-                product: 'Leche Integral 1L',
-                quantity: 500,
-                from: 'Distribuidor X',
-                to: 'Bodega Central',
-                date: '2024-05-14',
-                status: 'Completado'
-            },
-            {
-                id: 'REF-2846',
-                type: 'Salida',
-                product: 'Cereal Premium 500g',
-                quantity: 200,
-                from: 'Bodega Central',
-                to: 'Punto Venta',
-                date: '2024-05-14',
-                status: 'Completado'
-            },
-            {
-                id: 'REF-2845',
-                type: 'Transferencia',
-                product: 'Pan Integral 600g',
-                quantity: 150,
-                from: 'Bodega Central',
-                to: 'Sucursal Norte',
-                date: '2024-05-14',
-                status: 'Completado'
-            }
-        ]
+        count: movements.length,
+        data: movements
     });
-});
+}));
 
 // GET - Obtener movimientos por tipo
-router.get('/movements/:type', (req, res) => {
-    const type = req.params.type;
+router.get('/movements/:type', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const movements = await warehouseService.getMovements(tenantId, { type: req.params.type });
+    
     res.json({
         status: 'success',
-        type: type,
-        data: {
-            total: type === 'entrada' ? 23 : type === 'salida' ? 45 : 18,
-            lastUpdate: new Date().toISOString()
-        }
+        type: req.params.type,
+        count: movements.length,
+        data: movements
     });
-});
+}));
 
-// POST - Registrar entrada
-router.post('/movements/entrada', (req, res) => {
+// POST - Registrar entrada de inventario
+router.post('/movements/entrada', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const movement = await warehouseService.createEntrada(tenantId, req.body, userId);
+    
     res.status(201).json({
         status: 'success',
         message: 'Entrada registrada exitosamente',
-        data: {
-            id: 'REF-' + Date.now(),
-            type: 'Entrada',
-            ...req.body,
-            timestamp: new Date().toISOString()
-        }
+        data: movement
     });
-});
+}));
 
-// POST - Registrar salida
-router.post('/movements/salida', (req, res) => {
+// POST - Registrar salida de inventario
+router.post('/movements/salida', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const movement = await warehouseService.createSalida(tenantId, req.body, userId);
+    
     res.status(201).json({
         status: 'success',
         message: 'Salida registrada exitosamente',
-        data: {
-            id: 'REF-' + Date.now(),
-            type: 'Salida',
-            ...req.body,
-            timestamp: new Date().toISOString()
-        }
+        data: movement
     });
-});
+}));
 
 // POST - Registrar transferencia
-router.post('/movements/transfer', (req, res) => {
+router.post('/movements/transfer', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const movement = await warehouseService.createTransferencia(tenantId, req.body, userId);
+    
     res.status(201).json({
         status: 'success',
         message: 'Transferencia registrada exitosamente',
-        data: {
-            id: 'REF-' + Date.now(),
-            type: 'Transferencia',
-            ...req.body,
-            timestamp: new Date().toISOString()
-        }
+        data: movement
     });
-});
+}));
 
-// GET - Obtener resumen de bodega
-router.get('/report/summary', (req, res) => {
+// GET - Resumen de bodega
+router.get('/report/summary', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const warehouseStats = await warehouseService.getWarehouses(tenantId);
+    const movementStats = await warehouseService.getSummary(tenantId);
+    
     res.json({
         status: 'success',
         data: {
-            totalBodegas: 3,
-            totalCapacity: 4900,
-            totalUsed: 3396,
-            averageUtilization: 69,
-            entries: 23,
-            exits: 45,
-            transfers: 18
+            warehouses: warehouseStats.length,
+            ...movementStats
         }
     });
-});
+}));
 
-// GET - Obtener ubicaciones en bodega
-router.get('/:id/locations', (req, res) => {
+// GET - Ubicaciones en bodega
+router.get('/:id/locations', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const warehouse = await warehouseService.getWarehouseById(tenantId, req.params.id);
+    
     res.json({
         status: 'success',
-        data: [
-            {
-                location: 'Pasillo A, Estante 5',
-                product: 'Leche Integral 1L',
-                quantity: 145,
-                temperature: '4°C'
-            },
-            {
-                location: 'Pasillo B, Estante 3',
-                product: 'Cereal Premium 500g',
-                quantity: 5,
-                temperature: '20°C'
-            }
-        ]
+        data: warehouse.locations || []
     });
-});
+}));
 
 module.exports = router;

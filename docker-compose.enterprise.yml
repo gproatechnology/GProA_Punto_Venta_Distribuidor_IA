@@ -1,0 +1,56 @@
+# GProA - Docker Compose Enterprise
+# Uso: docker-compose -f docker-compose.enterprise.yml up -d
+
+services:
+  # MongoDB Service
+  mongodb:
+    image: mongo:7.0
+    container_name: gproa-mongodb-enterprise
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: gproa_punto_venta
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - gproa-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Backend Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gproa-backend-enterprise
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://admin:admin123@mongodb:27017/gproa_punto_venta?authSource=admin
+      DEFAULT_TENANT_ID: default_tenant_id
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - gproa-network
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+
+networks:
+  gproa-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    name: gproa-mongodb-data-enterprise

@@ -1,120 +1,130 @@
-const express = require('express');
-const router = express.Router();
-
 /**
- * Rutas de Ventas
+ * GProA - Rutas de Ventas
+ * backend/routes/salesRoutes.js
+ * 
+ * Rutas delgadas - toda lógica en services/
  */
 
+const express = require('express');
+const router = express.Router();
+const salesService = require('../services/salesService');
+const { asyncHandler } = require('../utils/errors');
+
 // GET - Obtener todas las ventas
-router.get('/', (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const { startDate, endDate, seller, status } = req.query;
+    
+    const filters = {};
+    if (startDate || endDate) {
+        filters.date = {};
+        if (startDate) filters.date.$gte = new Date(startDate);
+        if (endDate) filters.date.$lte = new Date(endDate);
+    }
+    if (seller) filters.seller = seller;
+    if (status) filters.status = status;
+    
+    const sales = await salesService.getSales(tenantId, filters);
+    
     res.json({
         status: 'success',
         message: 'Ventas obtenidas',
-        data: {
-            total: 45230.50,
-            transactions: 28,
-            average: 1616.09,
-            sales: [
-                {
-                    id: '#2847',
-                    customer: 'Juan García',
-                    products: 12,
-                    amount: 2450.00,
-                    method: 'Efectivo',
-                    time: '14:35',
-                    status: 'Completado'
-                },
-                {
-                    id: '#2846',
-                    customer: 'María López',
-                    products: 8,
-                    amount: 1880.50,
-                    method: 'Tarjeta',
-                    time: '14:15',
-                    status: 'Completado'
-                }
-            ]
-        }
+        count: sales.length,
+        data: sales
     });
-});
+}));
 
 // GET - Obtener venta por ID
-router.get('/:id', (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const sale = await salesService.getSaleById(tenantId, req.params.id);
+    
     res.json({
         status: 'success',
         message: `Venta ${req.params.id} obtenida`,
-        data: {
-            id: req.params.id,
-            customer: 'Cliente ejemplo',
-            products: [],
-            total: 0,
-            paymentMethod: 'Efectivo',
-            date: new Date().toISOString()
-        }
+        data: sale
     });
-});
+}));
 
 // POST - Crear nueva venta
-router.post('/', (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const sale = await salesService.createSale(tenantId, req.body, userId);
+    
     res.status(201).json({
         status: 'success',
         message: 'Venta registrada exitosamente',
-        data: {
-            id: '#' + Date.now(),
-            ...req.body,
-            timestamp: new Date().toISOString()
-        }
+        data: sale
     });
-});
+}));
 
 // PUT - Actualizar venta
-router.put('/:id', (req, res) => {
+router.put('/:id', asyncHandler(async (req, res) => {
+    // Por ahora no permitimos actualización de ventas completadas
+    res.status(400).json({
+        status: 'error',
+        message: 'No se pueden modificar ventas completadas'
+    });
+}));
+
+// DELETE - Cancelar venta
+router.delete('/:id', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const userId = req.user?.id || req.body.userId;
+    
+    const sale = await salesService.cancelSale(tenantId, req.params.id, userId);
+    
     res.json({
         status: 'success',
-        message: `Venta ${req.params.id} actualizada`,
-        data: req.body
+        message: `Venta ${req.params.id} cancelada`,
+        data: sale
     });
-});
+}));
 
-// DELETE - Anular venta
-router.delete('/:id', (req, res) => {
-    res.json({
-        status: 'success',
-        message: `Venta ${req.params.id} anulada`
-    });
-});
-
-// GET - Obtener resumen de ventas
-router.get('/report/summary', (req, res) => {
-    res.json({
-        status: 'success',
-        data: {
-            totalSales: 318250,
-            transactions: 156,
-            averageSale: 2039.42,
-            paymentMethods: {
-                cash: 45,
-                card: 35,
-                transfer: 20
-            }
-        }
-    });
-});
-
-// GET - Obtener ventas por período
-router.get('/report/period', (req, res) => {
+// GET - Resumen de ventas
+router.get('/report/summary', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
     const { startDate, endDate } = req.query;
+    
+    const start = startDate ? new Date(startDate) : new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = endDate ? new Date(endDate) : new Date();
+    end.setHours(23, 59, 59, 999);
+    
+    const summary = await salesService.getSalesSummary(tenantId, start, end);
+    
     res.json({
         status: 'success',
-        period: {
-            start: startDate,
-            end: endDate
-        },
-        data: {
-            total: 45230.50,
-            count: 28
-        }
+        data: summary
     });
-});
+}));
+
+// GET - Ventas por período
+router.get('/report/period', asyncHandler(async (req, res) => {
+    const tenantId = req.tenantId || req.headers['x-tenant-id'];
+    const { startDate, endDate } = req.query;
+    
+    if (!startDate || !endDate) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Se requieren startDate y endDate'
+        });
+    }
+    
+    const sales = await salesService.getSalesByPeriod(
+        tenantId,
+        new Date(startDate),
+        new Date(endDate)
+    );
+    
+    res.json({
+        status: 'success',
+        period: { start: startDate, end: endDate },
+        count: sales.length,
+        data: sales
+    });
+}));
 
 module.exports = router;

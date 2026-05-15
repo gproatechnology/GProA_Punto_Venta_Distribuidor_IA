@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: GProA - Punto de Venta Distribuidor IA
+  description: API REST para sistema de punto de venta, inventario y gestión de bodega
+  version: 1.0.0
+  contact:
+    name: GProA Technology
+    email: support@gproa.com
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo
+
+tags:
+  - name: Inventory
+    description: Gestión de productos e inventario
+  - name: Sales
+    description: Punto de venta y transacciones
+  - name: Warehouse
+    description: Control de bodega y movimientos
+  - name: Dashboard
+    description: Métricas y KPIs
+  - name: System
+    description: Salud y monitoreo del sistema
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - System
+      summary: Health check del sistema
+      responses:
+        200:
+          description: Sistema operativo
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/metrics:
+    get:
+      tags:
+        - System
+      summary: Métricas del sistema
+      responses:
+        200:
+          description: Métricas obtenidas
+
+  /api/inventory/products:
+    get:
+      tags:
+        - Inventory
+      summary: Listar productos
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: Lista de productos
+    post:
+      tags:
+        - Inventory
+      summary: Crear producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        201:
+          description: Producto creado
+
+  /api/sales:
+    get:
+      tags:
+        - Sales
+      summary: Listar ventas
+      responses:
+        200:
+          description: Lista de ventas
+    post:
+      tags:
+        - Sales
+      summary: Crear venta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+      responses:
+        201:
+          description: Venta creada
+
+  /api/warehouse/movements/list:
+    get:
+      tags:
+        - Warehouse
+      summary: Listar movimientos
+      responses:
+        200:
+          description: Lista de movimientos
+
+  /api/warehouse/movements/entrada:
+    post:
+      tags:
+        - Warehouse
+      summary: Registrar entrada de inventario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                quantity:
+                  type: number
+      responses:
+        201:
+          description: Entrada registrada
+
+  /api/dashboard/metrics:
+    get:
+      tags:
+        - Dashboard
+      summary: Métricas del dashboard
+      responses:
+        200:
+          description: Métricas obtenidas
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - sku
+        - name
+        - category
+        - price
+        - cost
+        - minStock
+      properties:
+        sku:
+          type: string
+          example: LAC-001
+        name:
+          type: string
+          example: Leche Entera 1L
+        category:
+          type: string
+          example: Lácteos
+        price:
+          type: number
+          example: 28.00
+        cost:
+          type: number
+          example: 22.00
+        stock:
+          type: number
+          example: 150
+        minStock:
+          type: number
+          example: 50
+
+    Sale:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+              quantity:
+                type: number
+        paymentMethod:
+          type: string
+          enum:
+            - cash
+            - card
+            - transfer
