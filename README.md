@@ -1,203 +1,251 @@
-# GProA Punto de Venta Distribuidor IA
+# 🚀 GProA - Sistema de Punto de Venta Distribuidor IA
 
-Sistema inteligente de punto de venta, inventario y trazabilidad diseñado para distribuidores con operación en bodega, vendedores y control de mercancía.
+**Solución empresarial moderna para distribuidores, bodegas y comercios** con gestión completa de inventario, punto de venta, trazabilidad e inteligencia artificial.
 
-## Objetivo
-
-Digitalizar y automatizar la operación completa de un distribuidor que actualmente trabaja procesos manuales:
-
-* Control de inventario
-* Entradas y salidas de mercancía
-* Seguimiento de vendedores
-* Trazabilidad de productos
-* Control de trabajadores
-* Reportes de ventas
-* Gestión de bodega
-* Auditoría de movimientos
-* Integración futura con IA
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-Active%20Development-brightgreen)
+![Node](https://img.shields.io/badge/node-18.0+-brightgreen)
 
 ---
 
-# Visión del Proyecto
+## 📋 Tabla de Contenidos
 
-El objetivo es construir una plataforma escalable inspirada en sistemas tipo ERP/POS como:
-
-* Hangel
-* SoftRestaurant
-* Odoo
-* SAP Business One
-* Sistemas internos de distribución
-
-Pero enfocada específicamente en:
-
-✅ Distribuidores medianos
-✅ Bodegas
-✅ Rutas de vendedores
-✅ Control operativo en tiempo real
-✅ Bajo costo de implementación
-✅ Integración futura con inteligencia artificial
+- [Características](#-características)
+- [Tecnologías](#-tecnologías)
+- [Instalación](#-instalación)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Uso](#-uso)
+- [API Endpoints](#-api-endpoints)
+- [Roadmap](#-roadmap)
+- [Contribución](#-contribución)
+- [Licencia](#-licencia)
 
 ---
 
-# Funcionalidades Planeadas
+## ✨ Características
 
-## Inventario
+### 📊 Dashboard Administrativo
+- Métricas en tiempo real de ventas
+- KPIs de inventario y desempeño
+- Gráficos interactivos y análisis visual
+- Últimos movimientos y actividades
+- Alertas de stock y anomalías
 
-* Registro de productos
-* Control de stock
-* Ajustes de inventario
-* Entradas y salidas
-* Kardex
-* Control por lote
-* Historial de movimientos
+### 🛒 Punto de Venta (POS)
+- Interfaz moderna y responsive
+- Gestión rápida de transacciones
+- Múltiples métodos de pago
+- Historial de ventas completo
+- Integración con inventario en tiempo real
 
-## Punto de Venta
+### 📦 Gestión de Inventario
+- Control completo de productos
+- Alertas de stock bajo
+- Categorización automática
+- Códigos de barras y SKU
+- Rotación de inventario
 
-* Ventas rápidas
-* Tickets
-* Facturación
-* Cortes de caja
-* Control de efectivo
-* Historial de ventas
+### 🏢 Control de Bodega
+- Movimientos de entrada/salida
+- Transferencias entre ubicaciones
+- Capacidad y utilización
+- Control de temperatura
+- Gestión de ubicaciones
 
-## Bodega
+### 👥 Gestión de Trabajadores
+- Perfiles de empleados
+- Sistema de roles y permisos
+- Seguimiento de productividad
+- Historial de actividades
+- Control de asistencia
 
-* Recepción de mercancía
-* Validación de pedidos
-* Transferencias internas
-* Control de surtido
-* Trazabilidad
+### 🔍 Trazabilidad Completa
+- Rastreo de productos por lote
+- Línea de tiempo de movimientos
+- Documentos asociados
+- Historial completo de trazabilidad
+- Conformidad normativa
 
-## Trabajadores
+### 📈 Reportes Avanzados
+- Reporte de ventas
+- Análisis de inventario
+- Eficiencia de bodega
+- Productividad de empleados
+- Análisis de rentabilidad
+- Exportación a Excel/PDF
 
-* Roles y permisos
-* Registro de actividades
-* Auditoría de acciones
-* Control por usuario
-
-## Vendedores
-
-* Seguimiento de ventas
-* Métricas por vendedor
-* Comisiones
-* Geolocalización futura
-* Rutas de reparto
-
-## Inteligencia Artificial
-
-Planeado para futuras versiones:
-
-* Predicción de ventas
-* Recomendación de inventario
-* Alertas inteligentes
-* Detección de anomalías
-* Lectura automatizada de documentos
-* OCR para tickets y facturas
-
----
-
-# Stack Tecnológico
-
-## Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-* TailwindCSS (futuro)
-* React (escalabilidad futura)
-
-## Backend
-
-* Node.js
-* Express.js
-
-## Base de Datos
-
-* MongoDB
-
-## DevOps / Hosting
-
-* GitHub
-* GitHub Pages
-* Vercel
-* Docker (futuro)
-
-## IA y Automatización
-
-* OpenAI API
-* OCR
-* Python Services
+### 🤖 AI Analytics (Beta)
+- **Predicción de Ventas**: Modelos ARIMA y Prophet
+- **Recomendaciones Inteligentes**: Optimización de stock y precios
+- **Detección de Anomalías**: Identificación de comportamientos inusuales
+- **OCR de Documentos**: Captura automática de datos
+- **Forecasting Avanzado**: Deep Learning para demanda
+- **Segmentación de Clientes**: Clustering automático
 
 ---
 
-# Arquitectura Inicial
+## 🛠 Tecnologías
 
-```txt
-Frontend (HTML/CSS/JS)
-        ↓
-API REST (Node.js + Express)
-        ↓
-MongoDB
-        ↓
-Módulos IA / Reportes / Automatización
+### Frontend
+- **HTML5** - Estructura semántica
+- **CSS3** - Diseño responsive y moderno
+- **JavaScript Vanilla** - Sin dependencias pesadas
+- **Font Awesome 6** - Iconografía
+
+### Backend
+- **Node.js 18+** - Runtime JavaScript
+- **Express.js 4** - Framework web
+- **CORS** - Control de acceso
+- **Body Parser** - Parsing de requests
+
+### Base de Datos
+- **MongoDB** - Base de datos NoSQL
+- **Mongoose** - ODM para MongoDB
+- **Schema validation** - Validación de datos
+
+---
+
+## 📦 Instalación
+
+### Requisitos Previos
+- Node.js 18.0 o superior
+- npm 9.0 o superior
+
+### Pasos
+
+```bash
+# Clonar
+git clone https://github.com/gproatechnology/GProA_Punto_Venta_Distribuidor_IA.git
+cd GProA_Punto_Venta_Distribuidor_IA
+
+# Instalar dependencias
+npm install
+
+# Desarrollo
+npm run dev
+
+# Producción
+npm start
 ```
 
+Acceder: http://localhost:3000
+
 ---
 
-# Estructura Inicial del Proyecto
+## 📁 Estructura
 
-```txt
-/GProA_Punto_Venta_Distribuidor_IA
-│
+```
+GProA_Punto_Venta_Distribuidor_IA/
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
-│
 ├── backend/
 │   ├── server.js
-│   ├── routes/
-│   ├── controllers/
-│   └── models/
-│
+│   └── routes/
 ├── database/
-│
-├── docs/
-│
+│   └── mongodb-schema.json
+├── package.json
 └── README.md
 ```
 
 ---
 
-# Roadmap
+## 🚀 Uso
 
-## Fase 1
+Navegar entre secciones usando el menú lateral:
+1. **Dashboard** - Overview del negocio
+2. **Punto de Venta** - Registro de ventas
+3. **Inventario** - Gestión de productos
+4. **Bodega** - Control de almacenamiento
+5. **Trazabilidad** - Rastreo de productos
+6. **Trabajadores** - Gestión de personal
+7. **Reportes** - Análisis e informes
+8. **AI Analytics** - Funcionalidades de IA
 
-* Landing visual
-* Dashboard básico
-* Diseño de interfaz
-* Publicación en GitHub Pages
+---
 
-## Fase 2
+## 🔌 API Endpoints
 
-* Backend funcional
-* API REST
-* Login
-* CRUD inventario
-* CRUD ventas
+### Inventario
+```
+GET    /api/inventory/products
+POST   /api/inventory/products
+GET    /api/inventory/products/:sku
+```
 
-## Fase 3
+### Ventas
+```
+GET    /api/sales
+POST   /api/sales
+GET    /api/sales/:id
+```
 
-* Reportes
-* Roles y permisos
-* Auditoría
-* Trazabilidad
+### Bodega
+```
+GET    /api/warehouse
+POST   /api/warehouse/movements/entrada
+POST   /api/warehouse/movements/salida
+```
 
-## Fase 4
+### Reportes
+```
+GET    /api/reports
+GET    /api/reports/sales
+GET    /api/reports/inventory
+```
 
-* Integración IA
-* Predicciones
-* OCR
+### AI Analytics
+```
+GET    /api/ai-analytics/predictions/sales
+GET    /api/ai-analytics/recommendations
+GET    /api/ai-analytics/anomalies
+```
+
+---
+
+## 📋 Roadmap
+
+### v1.0 ✅
+- Dashboard administrativo
+- Sistema POS
+- Gestión de inventario
+- Control de bodega
+- AI Analytics (Beta)
+
+### v1.1 🔄
+- Autenticación JWT
+- Códigos QR
+- Notificaciones
+- App Offline
+
+### v2.0
+- Migración a React
+- Microservicios
+- ML Models avanzados
+- App Móvil
+
+---
+
+## 🤝 Contribución
+
+Fork → Branch → Commit → Pull Request
+
+---
+
+## 📄 Licencia
+
+MIT License - Ver LICENSE
+
+---
+
+## 📞 Soporte
+
+- 📧 Email: support@gproa.com
+- 🌐 Website: https://gproa.com
+
+**GProA - Transformando distribuidores a través de la tecnología**
 * Automatizaciones
 
 ---

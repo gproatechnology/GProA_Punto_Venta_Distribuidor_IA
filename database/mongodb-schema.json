@@ -1,0 +1,143 @@
+{
+  "collections": {
+    "products": {
+      "description": "Catálogo de productos del sistema",
+      "schema": {
+        "sku": { "type": "string", "required": true, "unique": true },
+        "name": { "type": "string", "required": true },
+        "category": { "type": "string", "required": true },
+        "description": { "type": "string" },
+        "price": { "type": "number", "required": true },
+        "cost": { "type": "number", "required": true },
+        "stock": { "type": "number", "default": 0 },
+        "minStock": { "type": "number", "required": true },
+        "maxStock": { "type": "number" },
+        "supplier": { "type": "string" },
+        "barcode": { "type": "string", "unique": true },
+        "status": { "type": "string", "enum": ["active", "inactive", "discontinued"] },
+        "createdAt": { "type": "date" },
+        "updatedAt": { "type": "date" }
+      }
+    },
+    "sales": {
+      "description": "Registro de transacciones de venta",
+      "schema": {
+        "ticketNumber": { "type": "string", "required": true, "unique": true },
+        "date": { "type": "date", "required": true },
+        "customer": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "subtotal": { "type": "number" },
+        "tax": { "type": "number" },
+        "total": { "type": "number", "required": true },
+        "paymentMethod": { "type": "string", "enum": ["cash", "card", "transfer"] },
+        "seller": { "type": "string", "required": true },
+        "status": { "type": "string", "enum": ["completed", "pending", "cancelled"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "date" }
+      }
+    },
+    "warehouse_movements": {
+      "description": "Movimientos de inventario en bodega",
+      "schema": {
+        "reference": { "type": "string", "required": true, "unique": true },
+        "type": { "type": "string", "enum": ["entrada", "salida", "transferencia"], "required": true },
+        "date": { "type": "date", "required": true },
+        "product": { "type": "string", "required": true },
+        "quantity": { "type": "number", "required": true },
+        "fromWarehouse": { "type": "string" },
+        "toWarehouse": { "type": "string" },
+        "supplier": { "type": "string" },
+        "user": { "type": "string", "required": true },
+        "status": { "type": "string", "enum": ["pending", "completed", "cancelled"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "date" }
+      }
+    },
+    "warehouses": {
+      "description": "Información de bodegas",
+      "schema": {
+        "name": { "type": "string", "required": true, "unique": true },
+        "location": { "type": "string" },
+        "capacity": { "type": "number", "required": true },
+        "used": { "type": "number", "default": 0 },
+        "temperature": { "type": "number" },
+        "humidity": { "type": "number" },
+        "status": { "type": "string", "enum": ["operational", "maintenance", "closed"] },
+        "manager": { "type": "string" },
+        "createdAt": { "type": "date" }
+      }
+    },
+    "users": {
+      "description": "Registro de usuarios/empleados",
+      "schema": {
+        "email": { "type": "string", "required": true, "unique": true },
+        "firstName": { "type": "string", "required": true },
+        "lastName": { "type": "string", "required": true },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "seller", "warehouse_staff", "manager"], "required": true },
+        "department": { "type": "string" },
+        "password": { "type": "string", "required": true },
+        "status": { "type": "string", "enum": ["active", "inactive", "suspended"] },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "lastLogin": { "type": "date" },
+        "createdAt": { "type": "date" },
+        "updatedAt": { "type": "date" }
+      }
+    },
+    "roles": {
+      "description": "Definición de roles y permisos",
+      "schema": {
+        "name": { "type": "string", "required": true, "unique": true },
+        "description": { "type": "string" },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "date" }
+      }
+    },
+    "traceability": {
+      "description": "Trazabilidad de productos",
+      "schema": {
+        "batchNumber": { "type": "string", "required": true, "unique": true },
+        "product": { "type": "string", "required": true },
+        "supplier": { "type": "string" },
+        "quantity": { "type": "number", "required": true },
+        "manufacturingDate": { "type": "date" },
+        "expiryDate": { "type": "date" },
+        "qcStatus": { "type": "string", "enum": ["passed", "failed", "pending"] },
+        "storageLocation": { "type": "string" },
+        "movements": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "date" }
+      }
+    },
+    "ai_predictions": {
+      "description": "Predicciones generadas por IA",
+      "schema": {
+        "type": { "type": "string", "required": true },
+        "target": { "type": "string", "required": true },
+        "prediction": { "type": "number", "required": true },
+        "confidence": { "type": "number" },
+        "model": { "type": "string" },
+        "generatedAt": { "type": "date" },
+        "validity": { "type": "date" }
+      }
+    },
+    "reports": {
+      "description": "Reportes generados",
+      "schema": {
+        "type": { "type": "string", "required": true },
+        "title": { "type": "string", "required": true },
+        "data": { "type": "object" },
+        "generatedBy": { "type": "string", "required": true },
+        "generatedAt": { "type": "date" },
+        "periodStart": { "type": "date" },
+        "periodEnd": { "type": "date" }
+      }
+    }
+  },
+  "indexes": {
+    "products": ["sku", "category", "status"],
+    "sales": ["date", "seller", "status"],
+    "warehouse_movements": ["type", "date", "product"],
+    "users": ["email", "role", "status"],
+    "traceability": ["batchNumber", "product", "expiryDate"]
+  }
+}

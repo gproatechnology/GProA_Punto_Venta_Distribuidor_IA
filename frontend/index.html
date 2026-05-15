@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GProA - Sistema de Punto de Venta Distribuidor IA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>GProA</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <p class="section-title">PRINCIPAL</p>
+                <button class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <p class="section-title">OPERACIONES</p>
+                <button class="nav-item" data-section="sales">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Punto de Venta</span>
+                </button>
+                <button class="nav-item" data-section="inventory">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventario</span>
+                </button>
+                <button class="nav-item" data-section="warehouse">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Bodega</span>
+                </button>
+                <button class="nav-item" data-section="traceability">
+                    <i class="fas fa-route"></i>
+                    <span>Trazabilidad</span>
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <p class="section-title">ADMINISTRACIÓN</p>
+                <button class="nav-item" data-section="employees">
+                    <i class="fas fa-users"></i>
+                    <span>Trabajadores</span>
+                </button>
+                <button class="nav-item" data-section="permissions">
+                    <i class="fas fa-lock"></i>
+                    <span>Roles y Permisos</span>
+                </button>
+                <button class="nav-item" data-section="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reportes</span>
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <p class="section-title">FUTURO</p>
+                <button class="nav-item" data-section="ai-analytics">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Analytics</span>
+                    <span class="badge">Beta</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <p class="user-name">Admin</p>
+                    <p class="user-role">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 id="section-title">Dashboard</h1>
+                <p id="section-subtitle">Bienvenido a GProA Sistema de Punto de Venta</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="settings-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Areas -->
+        <div class="content">
+            <!-- DASHBOARD SECTION -->
+            <section id="dashboard-section" class="section active">
+                <div class="dashboard-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card sales">
+                            <div class="kpi-header">
+                                <h3>Ventas del Día</h3>
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <p class="kpi-value">$45,230.50</p>
+                            <p class="kpi-subtitle">+12.5% vs ayer</p>
+                            <div class="kpi-chart">
+                                <div class="mini-chart" style="--value: 85;"></div>
+                                <div class="mini-chart" style="--value: 92;"></div>
+                                <div class="mini-chart" style="--value: 78;"></div>
+                                <div class="mini-chart" style="--value: 88;"></div>
+                                <div class="mini-chart" style="--value: 95;"></div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card products">
+                            <div class="kpi-header">
+                                <h3>Productos Vendidos</h3>
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <p class="kpi-value">1,247</p>
+                            <p class="kpi-subtitle">28 transacciones</p>
+                            <div class="kpi-bar">
+                                <div class="bar" style="width: 75%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card stock">
+                            <div class="kpi-header">
+                                <h3>Stock Bajo</h3>
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <p class="kpi-value">12</p>
+                            <p class="kpi-subtitle">Productos alerta</p>
+                            <div class="stock-list">
+                                <span class="stock-item">Cereal X1 - 5 unid</span>
+                                <span class="stock-item">Leche 1L - 3 unid</span>
+                                <span class="stock-item">Pan integral - 2 unid</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card employees">
+                            <div class="kpi-header">
+                                <h3>Empleados Activos</h3>
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <p class="kpi-value">8</p>
+                            <p class="kpi-subtitle">de 12 total</p>
+                            <div class="employee-badges">
+                                <span class="badge active">Caja</span>
+                                <span class="badge active">Bodega</span>
+                                <span class="badge">Gerencia</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="charts-row">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Ventas por Categoría</h3>
+                                <div class="chart-actions">
+                                    <button>Hoy</button>
+                                    <button>Mes</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <div class="bar-chart">
+                                    <div class="bar-item">
+                                        <div class="bar-value" style="height: 85%;"></div>
+                                        <span>Alimentos</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <div class="bar-value" style="height: 62%;"></div>
+                                        <span>Bebidas</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <div class="bar-value" style="height: 78%;"></div>
+                                        <span>Lácteos</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <div class="bar-value" style="height: 55%;"></div>
+                                        <span>Otros</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Métodos de Pago</h3>
+                            </div>
+                            <div class="pie-chart">
+                                <div class="pie">
+                                    <div class="pie-segment efectivo" style="--percentage: 45;"></div>
+                                    <div class="pie-segment tarjeta" style="--percentage: 35;"></div>
+                                    <div class="pie-segment transferencia" style="--percentage: 20;"></div>
+                                </div>
+                                <div class="pie-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color efectivo"></span>
+                                        <span>Efectivo (45%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color tarjeta"></span>
+                                        <span>Tarjeta (35%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color transferencia"></span>
+                                        <span>Transferencia (20%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3>Últimos Movimientos</h3>
+                            <a href="#" class="view-all">Ver todos</a>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item sale">
+                                <div class="activity-icon">
+                                    <i class="fas fa-cash-register"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Venta registrada</p>
+                                    <p class="activity-desc">Ticket #2847 - Alimentos y Bebidas</p>
+                                </div>
+                                <p class="activity-time">Hace 5 min</p>
+                            </div>
+
+                            <div class="activity-item stock">
+                                <div class="activity-icon">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Entrada de inventario</p>
+                                    <p class="activity-desc">500 unid - Leche integral 1L</p>
+                                </div>
+                                <p class="activity-time">Hace 23 min</p>
+                            </div>
+
+                            <div class="activity-item user">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Nuevo usuario agregado</p>
+                                    <p class="activity-desc">Carlos Menéndez - Rol: Vendedor</p>
+                                </div>
+                                <p class="activity-time">Hace 1 hora</p>
+                            </div>
+
+                            <div class="activity-item transfer">
+                                <div class="activity-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Transferencia de bodega</p>
+                                    <p class="activity-desc">Centro → Sucursal Norte</p>
+                                </div>
+                                <p class="activity-time">Hace 2 horas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SALES SECTION -->
+            <section id="sales-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="new-sale-btn">
+                            <i class="fas fa-plus"></i> Nueva Venta
+                        </button>
+                        <div class="filter-group">
+                            <select class="filter-select">
+                                <option>Último día</option>
+                                <option>Última semana</option>
+                                <option>Último mes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sales-stats">
+                    <div class="stat-box">
+                        <p>Ventas Hoy</p>
+                        <h3>$45,230.50</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p>Transacciones</p>
+                        <h3>28</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p>Promedio/Venta</p>
+                        <h3>$1,616.09</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p>Métodos de Pago</p>
+                        <h3>3</h3>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket</th>
+                                <th>Cliente</th>
+                                <th>Productos</th>
+                                <th>Monto</th>
+                                <th>Método</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#2847</td>
+                                <td>Juan García</td>
+                                <td>12</td>
+                                <td>$2,450.00</td>
+                                <td><span class="badge-payment efectivo">Efectivo</span></td>
+                                <td>14:35</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                                <td>
+                                    <button class="action-btn" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" title="Imprimir">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#2846</td>
+                                <td>María López</td>
+                                <td>8</td>
+                                <td>$1,880.50</td>
+                                <td><span class="badge-payment tarjeta">Tarjeta</span></td>
+                                <td>14:15</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                                <td>
+                                    <button class="action-btn" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" title="Imprimir">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#2845</td>
+                                <td>Carlos Fernández</td>
+                                <td>15</td>
+                                <td>$3,220.00</td>
+                                <td><span class="badge-payment efectivo">Efectivo</span></td>
+                                <td>13:45</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                                <td>
+                                    <button class="action-btn" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" title="Imprimir">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#2844</td>
+                                <td>Ana Rodríguez</td>
+                                <td>6</td>
+                                <td>$980.75</td>
+                                <td><span class="badge-payment transferencia">Transferencia</span></td>
+                                <td>13:20</td>
+                                <td><span class="status-badge pending">Pendiente</span></td>
+                                <td>
+                                    <button class="action-btn" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" title="Imprimir">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#2843</td>
+                                <td>Roberto Martínez</td>
+                                <td>20</td>
+                                <td>$4,145.25</td>
+                                <td><span class="badge-payment tarjeta">Tarjeta</span></td>
+                                <td>12:50</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                                <td>
+                                    <button class="action-btn" title="Ver">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" title="Imprimir">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button class="pag-btn disabled">Anterior</button>
+                    <button class="pag-btn active">1</button>
+                    <button class="pag-btn">2</button>
+                    <button class="pag-btn">3</button>
+                    <button class="pag-btn">Siguiente</button>
+                </div>
+            </section>
+
+            <!-- INVENTORY SECTION -->
+            <section id="inventory-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Agregar Producto
+                        </button>
+                        <input type="text" class="search-input" placeholder="Buscar producto...">
+                        <select class="filter-select">
+                            <option>Todas las categorías</option>
+                            <option>Alimentos</option>
+                            <option>Bebidas</option>
+                            <option>Lácteos</option>
+                            <option>Otros</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="inventory-summary">
+                    <div class="summary-card">
+                        <h4>Total SKUs</h4>
+                        <p>892</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Valor Total</h4>
+                        <p>$485,320</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Stock Bajo</h4>
+                        <p>12</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Rotación</h4>
+                        <p>4.2x/mes</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                                <th>Mínimo</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SKU-001</td>
+                                <td>Leche Integral 1L</td>
+                                <td>Lácteos</td>
+                                <td>145</td>
+                                <td>50</td>
+                                <td>$2.50</td>
+                                <td><span class="status-badge success">Normal</span></td>
+                                <td>
+                                    <button class="action-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SKU-002</td>
+                                <td>Cereal Premium 500g</td>
+                                <td>Alimentos</td>
+                                <td>5</td>
+                                <td>30</td>
+                                <td>$4.99</td>
+                                <td><span class="status-badge danger">Crítico</span></td>
+                                <td>
+                                    <button class="action-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SKU-003</td>
+                                <td>Pan Integral 600g</td>
+                                <td>Alimentos</td>
+                                <td>28</td>
+                                <td>40</td>
+                                <td>$2.99</td>
+                                <td><span class="status-badge warning">Bajo</span></td>
+                                <td>
+                                    <button class="action-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SKU-004</td>
+                                <td>Jugo Natural 1L</td>
+                                <td>Bebidas</td>
+                                <td>320</td>
+                                <td>100</td>
+                                <td>$3.25</td>
+                                <td><span class="status-badge success">Normal</span></td>
+                                <td>
+                                    <button class="action-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SKU-005</td>
+                                <td>Queso Fresco 200g</td>
+                                <td>Lácteos</td>
+                                <td>67</td>
+                                <td>25</td>
+                                <td>$5.99</td>
+                                <td><span class="status-badge success">Normal</span></td>
+                                <td>
+                                    <button class="action-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- WAREHOUSE SECTION -->
+            <section id="warehouse-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-arrow-down"></i> Entrada
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-arrow-up"></i> Salida
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-exchange-alt"></i> Transferencia
+                        </button>
+                    </div>
+                </div>
+
+                <div class="warehouse-overview">
+                    <div class="warehouse-card">
+                        <h3>Bodega Central</h3>
+                        <p class="capacity">Capacidad: 2,500m³</p>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 72%;"></div>
+                        </div>
+                        <p class="capacity-text">1,800m³ utilizados</p>
+                    </div>
+                    <div class="warehouse-card">
+                        <h3>Bodega Sucursal Norte</h3>
+                        <p class="capacity">Capacidad: 1,200m³</p>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 45%;"></div>
+                        </div>
+                        <p class="capacity-text">540m³ utilizados</p>
+                    </div>
+                    <div class="warehouse-card">
+                        <h3>Bodega Sucursal Sur</h3>
+                        <p class="capacity">Capacidad: 1,200m³</p>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 88%;"></div>
+                        </div>
+                        <p class="capacity-text">1,056m³ utilizados</p>
+                    </div>
+                </div>
+
+                <div class="warehouse-tabs">
+                    <button class="tab-btn active" data-tab="movements">Movimientos</button>
+                    <button class="tab-btn" data-tab="transfers">Transferencias</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Tipo</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>REF-2847</td>
+                                <td><span class="badge-type entrada">Entrada</span></td>
+                                <td>Leche Integral 1L</td>
+                                <td>500</td>
+                                <td>Distribuidor X</td>
+                                <td>Bodega Central</td>
+                                <td>2024-05-14</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                            </tr>
+                            <tr>
+                                <td>REF-2846</td>
+                                <td><span class="badge-type salida">Salida</span></td>
+                                <td>Cereal Premium 500g</td>
+                                <td>200</td>
+                                <td>Bodega Central</td>
+                                <td>Punto Venta</td>
+                                <td>2024-05-14</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                            </tr>
+                            <tr>
+                                <td>REF-2845</td>
+                                <td><span class="badge-type transfer">Transferencia</span></td>
+                                <td>Pan Integral 600g</td>
+                                <td>150</td>
+                                <td>Bodega Central</td>
+                                <td>Sucursal Norte</td>
+                                <td>2024-05-14</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                            </tr>
+                            <tr>
+                                <td>REF-2844</td>
+                                <td><span class="badge-type entrada">Entrada</span></td>
+                                <td>Jugo Natural 1L</td>
+                                <td>300</td>
+                                <td>Distribuidor Y</td>
+                                <td>Bodega Central</td>
+                                <td>2024-05-13</td>
+                                <td><span class="status-badge completed">Completado</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TRACEABILITY SECTION -->
+            <section id="traceability-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <input type="text" class="search-input" placeholder="Rastrear por SKU, lote o serial...">
+                        <select class="filter-select">
+                            <option>Todos los estados</option>
+                            <option>En tránsito</option>
+                            <option>Entregado</option>
+                            <option>Pendiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="traceability-example">
+                    <h3>Rastreo de Producto: SKU-001 (Lote: 20240514-001)</h3>
+                    
+                    <div class="trace-timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Recepción de Materia Prima</h4>
+                                <p>Distribuidor X → Bodega Central</p>
+                                <p class="timeline-date">14/05/2024 08:30 AM</p>
+                                <p class="timeline-info">500 unidades verificadas</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Control de Calidad</h4>
+                                <p>Inspección realizada</p>
+                                <p class="timeline-date">14/05/2024 09:15 AM</p>
+                                <p class="timeline-info">100% aprobado</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Almacenamiento</h4>
+                                <p>Ubicación: Pasillo A, Estante 5</p>
+                                <p class="timeline-date">14/05/2024 10:00 AM</p>
+                                <p class="timeline-info">Condiciones: 4°C</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Distribución a Puntos de Venta</h4>
+                                <p>150 unidades a Sucursal Norte</p>
+                                <p class="timeline-date">14/05/2024 14:30 PM</p>
+                                <p class="timeline-info">Entregado</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item in-progress">
+                            <div class="timeline-marker">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Venta en Punto de Venta</h4>
+                                <p>345 unidades en circulación</p>
+                                <p class="timeline-date">Actualmente en proceso</p>
+                                <p class="timeline-info">Ventas acumuladas: 95 unidades</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trace-documents">
+                    <h3>Documentos Asociados</h3>
+                    <div class="documents-list">
+                        <div class="document-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="document-info">
+                                <p class="document-name">Factura de compra</p>
+                                <p class="document-date">2024-05-14</p>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="document-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="document-info">
+                                <p class="document-name">Reporte QC</p>
+                                <p class="document-date">2024-05-14</p>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="document-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="document-info">
+                                <p class="document-name">Guía de transporte</p>
+                                <p class="document-date">2024-05-14</p>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EMPLOYEES SECTION -->
+            <section id="employees-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Agregar Empleado
+                        </button>
+                        <input type="text" class="search-input" placeholder="Buscar empleado...">
+                    </div>
+                </div>
+
+                <div class="employees-grid">
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar admin">JD</div>
+                            <div class="employee-status online"></div>
+                        </div>
+                        <h4>Juan García</h4>
+                        <p class="role-badge admin">Administrador</p>
+                        <p class="contact">juan@gproa.com</p>
+                        <div class="stats">
+                            <span>Ventas: $12,450</span>
+                            <span>Activo hoy</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar vendedor">ML</div>
+                            <div class="employee-status online"></div>
+                        </div>
+                        <h4>María López</h4>
+                        <p class="role-badge vendedor">Vendedor</p>
+                        <p class="contact">maria@gproa.com</p>
+                        <div class="stats">
+                            <span>Ventas: $8,945</span>
+                            <span>Activo hoy</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar bodega">CF</div>
+                            <div class="employee-status online"></div>
+                        </div>
+                        <h4>Carlos Fernández</h4>
+                        <p class="role-badge bodega">Bodeguero</p>
+                        <p class="contact">carlos@gproa.com</p>
+                        <div class="stats">
+                            <span>Movimientos: 45</span>
+                            <span>Activo hoy</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar vendedor">AR</div>
+                            <div class="employee-status offline"></div>
+                        </div>
+                        <h4>Ana Rodríguez</h4>
+                        <p class="role-badge vendedor">Vendedor</p>
+                        <p class="contact">ana@gproa.com</p>
+                        <div class="stats">
+                            <span>Ventas: $6,230</span>
+                            <span>Inactivo</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar bodega">RM</div>
+                            <div class="employee-status online"></div>
+                        </div>
+                        <h4>Roberto Martínez</h4>
+                        <p class="role-badge bodega">Bodeguero</p>
+                        <p class="contact">roberto@gproa.com</p>
+                        <div class="stats">
+                            <span>Movimientos: 67</span>
+                            <span>Activo hoy</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar admin">SM</div>
+                            <div class="employee-status online"></div>
+                        </div>
+                        <h4>Sandra Moreno</h4>
+                        <p class="role-badge admin">Supervisor</p>
+                        <p class="contact">sandra@gproa.com</p>
+                        <div class="stats">
+                            <span>Supervisiones: 23</span>
+                            <span>Activo hoy</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-eye"></i> Ver Detalles
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PERMISSIONS SECTION -->
+            <section id="permissions-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Rol
+                        </button>
+                    </div>
+                </div>
+
+                <div class="roles-container">
+                    <div class="role-card">
+                        <div class="role-header">
+                            <h3>Administrador</h3>
+                            <span class="role-count">2 usuarios</span>
+                        </div>
+                        <div class="permissions-list">
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Gestión de inventario</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Punto de venta</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Gestión de bodega</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Gestión de usuarios</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Reportes</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Configuración</label>
+                            </div>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+
+                    <div class="role-card">
+                        <div class="role-header">
+                            <h3>Vendedor</h3>
+                            <span class="role-count">4 usuarios</span>
+                        </div>
+                        <div class="permissions-list">
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Punto de venta</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Ver inventario</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Gestión de usuarios</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Reportes</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Configuración</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Ver historial</label>
+                            </div>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+
+                    <div class="role-card">
+                        <div class="role-header">
+                            <h3>Bodeguero</h3>
+                            <span class="role-count">2 usuarios</span>
+                        </div>
+                        <div class="permissions-list">
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Gestión de bodega</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Ver inventario</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" checked disabled>
+                                <label>Registrar movimientos</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Punto de venta</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Gestión de usuarios</label>
+                            </div>
+                            <div class="permission">
+                                <input type="checkbox" disabled>
+                                <label>Configuración</label>
+                            </div>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REPORTS SECTION -->
+            <section id="reports-section" class="section">
+                <div class="section-header">
+                    <div class="header-actions">
+                        <select class="filter-select">
+                            <option>Últimos 7 días</option>
+                            <option>Último mes</option>
+                            <option>Último trimestre</option>
+                            <option>Personalizado</option>
+                        </select>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-icon sales">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Reporte de Ventas</h3>
+                        <p>Análisis detallado de ventas por período, categoría y vendedor</p>
+                        <div class="report-stats">
+                            <span>Total: $318,250</span>
+                            <span>Transacciones: 156</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon inventory">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <h3>Reporte de Inventario</h3>
+                        <p>Estado actual, rotación, obsolescencia y niveles de stock</p>
+                        <div class="report-stats">
+                            <span>SKUs: 892</span>
+                            <span>Valor: $485,320</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon warehouse">
+                            <i class="fas fa-warehouse"></i>
+                        </div>
+                        <h3>Reporte de Bodega</h3>
+                        <p>Movimientos, transferencias y utilización de capacidad</p>
+                        <div class="report-stats">
+                            <span>Entradas: 23</span>
+                            <span>Salidas: 45</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon employees">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Reporte de Empleados</h3>
+                        <p>Productividad, asistencia, comisiones y evaluación de desempeño</p>
+                        <div class="report-stats">
+                            <span>Empleados: 8</span>
+                            <span>Activos: 6</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon analytics">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Análisis de Rentabilidad</h3>
+                        <p>Margen, costo de operación y rentabilidad por línea de producto</p>
+                        <div class="report-stats">
+                            <span>Margen Promedio: 28%</span>
+                            <span>ROI: 145%</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon trace">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3>Trazabilidad Completa</h3>
+                        <p>Rastreo de productos desde proveedor hasta punto de venta final</p>
+                        <div class="report-stats">
+                            <span>Lotes Rastreados: 127</span>
+                            <span>Trazabilidad: 100%</span>
+                        </div>
+                        <button class="action-btn-full">
+                            <i class="fas fa-arrow-right"></i> Ver Reporte
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI ANALYTICS SECTION -->
+            <section id="ai-analytics-section" class="section">
+                <div class="section-header">
+                    <div class="ai-badge">
+                        <i class="fas fa-brain"></i> Powered by AI
+                    </div>
+                </div>
+
+                <div class="ai-info-banner">
+                    <div class="banner-content">
+                        <h3>GProA AI Analytics - Versión Beta</h3>
+                        <p>Herramientas de inteligencia artificial para análisis predictivo, recomendaciones personalizadas y detección inteligente de anomalías en tu negocio.</p>
+                    </div>
+                </div>
+
+                <div class="ai-features-grid">
+                    <div class="ai-card">
+                        <div class="ai-icon prediction">
+                            <i class="fas fa-crystal-ball"></i>
+                        </div>
+                        <h3>Predicción de Ventas</h3>
+                        <p>Modelos de ML que predicen tendencias de ventas con hasta 3 meses de anticipación</p>
+                        <div class="prediction-sample">
+                            <div class="prediction-item">
+                                <span>Próxima semana</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%;"></div>
+                                </div>
+                                <span class="value">+12.5%</span>
+                            </div>
+                            <div class="prediction-item">
+                                <span>Próximo mes</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 68%;"></div>
+                                </div>
+                                <span class="value">+8.2%</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Activar Análisis
+                        </button>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon recommendations">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Recomendaciones Inteligentes</h3>
+                        <p>Sistema de recomendaciones para optimizar inventario, precios y promociones</p>
+                        <div class="recommendations-sample">
+                            <div class="rec-item">
+                                <span class="rec-label">Aumentar stock de Leche integral 23%</span>
+                                <span class="rec-confidence">Confianza: 94%</span>
+                            </div>
+                            <div class="rec-item">
+                                <span class="rec-label">Promoción cruzada Cereal + Leche</span>
+                                <span class="rec-confidence">Confianza: 87%</span>
+                            </div>
+                            <div class="rec-item">
+                                <span class="rec-label">Optimizar precio de Pan integral 5%</span>
+                                <span class="rec-confidence">Confianza: 79%</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Ver Recomendaciones
+                        </button>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon anomalies">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h3>Detección de Anomalías</h3>
+                        <p>IA que identifica comportamientos inusuales en ventas, inventario y operaciones</p>
+                        <div class="anomalies-sample">
+                            <div class="anomaly-item warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Caída anómala del 34% en ventas de Bebidas</span>
+                            </div>
+                            <div class="anomaly-item success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Spike normal detectado: evento especial</span>
+                            </div>
+                            <div class="anomaly-item critical">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Posible discrepancia en conteo de Lácteos</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Analizar Anomalías
+                        </button>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon ocr">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h3>OCR de Documentos</h3>
+                        <p>Escaneo inteligente de facturas, guías y documentos para captura automática de datos</p>
+                        <div class="ocr-sample">
+                            <div class="ocr-upload">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Arrastra documentos o haz clic para cargar</p>
+                                <p class="ocr-hint">PDF, JPG, PNG - hasta 10MB</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Cargar Documento
+                        </button>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon forecast">
+                            <i class="fas fa-chart-area"></i>
+                        </div>
+                        <h3>Forecasting Avanzado</h3>
+                        <p>Proyecciones de demanda con técnicas ARIMA, Prophet y Deep Learning</p>
+                        <div class="forecast-sample">
+                            <div class="forecast-chart">
+                                <div class="forecast-bar" style="height: 45%; background: #3b82f6;"></div>
+                                <div class="forecast-bar" style="height: 52%; background: #3b82f6;"></div>
+                                <div class="forecast-bar" style="height: 60%; background: #3b82f6;"></div>
+                                <div class="forecast-bar" style="height: 68%; background: #8b5cf6;"></div>
+                                <div class="forecast-bar" style="height: 75%; background: #8b5cf6;"></div>
+                            </div>
+                            <p class="forecast-note">Predicción próximos 5 días</p>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Generar Forecast
+                        </button>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon clustering">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3>Segmentación de Clientes</h3>
+                        <p>Clustering automático de clientes por comportamiento, valor y preferencias</p>
+                        <div class="clustering-sample">
+                            <div class="segment-item vip">
+                                <span class="segment-name">VIP</span>
+                                <span class="segment-count">23 clientes</span>
+                                <span class="segment-value">60% ingresos</span>
+                            </div>
+                            <div class="segment-item regular">
+                                <span class="segment-name">Regular</span>
+                                <span class="segment-count">145 clientes</span>
+                                <span class="segment-value">35% ingresos</span>
+                            </div>
+                            <div class="segment-item occasional">
+                                <span class="segment-name">Ocasional</span>
+                                <span class="segment-count">287 clientes</span>
+                                <span class="segment-value">5% ingresos</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Analizar Segmentos
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ai-roadmap">
+                    <h3>Roadmap de Funcionalidades IA</h3>
+                    <div class="roadmap-items">
+                        <div class="roadmap-item available">
+                            <span class="roadmap-badge">Disponible</span>
+                            <p>Predicción de Ventas</p>
+                        </div>
+                        <div class="roadmap-item available">
+                            <span class="roadmap-badge">Disponible</span>
+                            <p>Recomendaciones</p>
+                        </div>
+                        <div class="roadmap-item coming">
+                            <span class="roadmap-badge">Próximamente</span>
+                            <p>IA Generativa para Reportes</p>
+                        </div>
+                        <div class="roadmap-item coming">
+                            <span class="roadmap-badge">Próximamente</span>
+                            <p>Chatbot IA para Soporte</p>
+                        </div>
+                        <div class="roadmap-item coming">
+                            <span class="roadmap-badge">Próximamente</span>
+                            <p>Visión por Computadora para Conteo</p>
+                        </div>
+                        <div class="roadmap-item coming">
+                            <span class="roadmap-badge">Próximamente</span>
+                            <p>Optimización de Rutas de Distribución</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Template -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Nueva Venta</h2>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Funcionalidad de punto de venta interactivo</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">Cancelar</button>
+                <button class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

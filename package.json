@@ -1,0 +1,40 @@
+{
+  "name": "gproa-punto-venta",
+  "version": "1.0.0",
+  "description": "GProA - Sistema de Punto de Venta Distribuidor IA",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pos",
+    "point-of-sale",
+    "erp",
+    "inventory",
+    "warehouse",
+    "distribuidor",
+    "ai"
+  ],
+  "author": "GProA Technology",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.5.0",
+    "dotenv": "^16.3.1",
+    "jwt-simple": "^0.5.6",
+    "bcryptjs": "^2.4.3",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
